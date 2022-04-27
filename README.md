@@ -1,4 +1,4 @@
-# React RRule Generator
+# React RRule Generator (Lite Version)
 > Recurrence rules generator form built with React
 
 [![LICENSE](https://img.shields.io/npm/l/express.svg)](LICENSE)
@@ -6,8 +6,9 @@
 
 ### This project is no longer maintained by me. Thank you for all your past contributions. Let the forks rock it for you.
 
-
 ![Screenshot](https://i.imgur.com/FU3aGlz.png)
+
+> Important: The bundle inside `build/index.js` does not contain the dependencies: lodash, react-datetime, moment. You will have to manually add those to your project. 
 
 ## Description
 

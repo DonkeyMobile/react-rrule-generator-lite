@@ -155,8 +155,48 @@ module.exports = {
     }),
   ],
   externals: {
-    react: 'react',
-    'react-dom': 'react-dom',
+    react: {
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'react',
+      root: 'react',
+    },
+    'react-dom':  {
+      commonjs: 'react-dom',
+      commonjs2: 'react-dom',
+      amd: 'react-dom',
+      root: 'react-dom',
+    },
+    'lodash': {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: 'lodash',
+      root: '_',
+    },
+    moment:  {
+      commonjs: 'moment',
+      commonjs2: 'moment',
+      amd: 'moment',
+      root: 'moment',
+    },
+    rrule:  {
+      commonjs: 'rrule',
+      commonjs2: 'rrule',
+      amd: 'rrule',
+      root: 'rrule',
+    },
+    'react-datetime':  {
+      commonjs: 'react-datetime',
+      commonjs2: 'react-datetime',
+      amd: 'react-datetime',
+      root: 'react-datetime',
+    },
+    'prop-types':  {
+      commonjs: 'prop-types',
+      commonjs2: 'prop-types',
+      amd: 'prop-types',
+      root: 'prop-types',
+    },
   },
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
