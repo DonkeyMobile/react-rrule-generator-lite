@@ -3,14 +3,23 @@ import { isEmpty, uniqueId } from 'lodash';
 
 import computeRRuleToString from './computeRRule/toString/computeRRule';
 import { DATE_TIME_FORMAT } from '../constants/index';
+import {extractDateFromRRule} from "./dateHelper";
 
-const configureState = (config = {}, calendarComponent, id) => {
+const configureState = (config = {}, calendarComponent, id, value) => {
+  const extractedDate = extractDateFromRRule(value);
   const configureFrequency = () => (config.repeat ? config.repeat[0] : 'Yearly');
   const configureYearly = () => (config.yearly || 'on');
   const configureMonthly = () => (config.monthly || 'on');
   const configureEnd = () => (config.end ? config.end[0] : 'Never');
   const configureHideStart = () => (typeof config.hideStart === 'undefined' ? true : config.hideStart);
   const uniqueRruleId = isEmpty(id) ? uniqueId('rrule-') : id;
+
+  let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  let months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  const weekdayIndex = extractedDate.getDay();
+  const monthIndex = extractedDate.getMonth();
+  const dayOfMonth = extractedDate.getDate();
 
   const data = {
     start: {
@@ -27,12 +36,12 @@ const configureState = (config = {}, calendarComponent, id) => {
       yearly: {
         mode: configureYearly(),
         on: {
-          month: 'Jan',
-          day: 1,
+          month: months[monthIndex],
+          day: dayOfMonth,
         },
         onThe: {
-          month: 'Jan',
-          day: 'Monday',
+          month: months[monthIndex],
+          day: weekdays[weekdayIndex],
           which: 'First',
         },
         options: {
@@ -43,10 +52,10 @@ const configureState = (config = {}, calendarComponent, id) => {
         mode: configureMonthly(),
         interval: 1,
         on: {
-          day: 1,
+          day: dayOfMonth,
         },
         onThe: {
-          day: 'Monday',
+          day: weekdays[weekdayIndex],
           which: 'First',
         },
         options: {
@@ -56,13 +65,13 @@ const configureState = (config = {}, calendarComponent, id) => {
       weekly: {
         interval: 1,
         days: {
-          mon: false,
-          tue: false,
-          wed: false,
-          thu: false,
-          fri: false,
-          sat: false,
-          sun: false,
+          mon: weekdayIndex === 1,
+          tue: weekdayIndex === 2,
+          wed: weekdayIndex === 3,
+          thu: weekdayIndex === 4,
+          fri: weekdayIndex === 5,
+          sat: weekdayIndex === 6,
+          sun: weekdayIndex === 0,
         },
         options: {
           weekStartsOnSunday: config.weekStartsOnSunday,

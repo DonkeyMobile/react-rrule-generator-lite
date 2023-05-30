@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { cloneDeep, set } from 'lodash';
 
@@ -12,117 +12,79 @@ import translateLabel from '../utils/translateLabel';
 import translations from '../translations';
 import '../styles/index.css';
 
-class ReactRRuleGenerator extends PureComponent {
-  // compute default view based on user's config
-  state = configureInitialState(
-    this.props.config,
-    this.props.calendarComponent,
-    this.props.id,
-  );
+const ReactRRuleGenerator = ({ id = null, value = '', config = {}, onChange = () => {}, calendarComponent = null, translations = translations.english }) => {
+  const [state, setState] = useState(() => configureInitialState(config, calendarComponent, id, value));
 
-  componentWillMount() {
-    if (this.props.onChange === ReactRRuleGenerator.defaultProps.onChange) {
-      // no onChange() was provided
-      throw new Error('No onChange() function has been passed to RRuleGenerator. \n' +
-        'Please provide one, it\'s needed to handle generated value.');
+  useEffect(() => {
+    if (value) {
+      const data = computeRRuleFromString(state.data, value);
+      setState(prevState => ({ ...prevState, data }));
     }
+  }, [value]);
 
-    if (this.props.value) {
-      // if value is provided to RRuleGenerator, it's used to compute state of component's forms
-      const data = computeRRuleFromString(this.state.data, this.props.value);
-      this.setState({ data });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.value) {
-      const data = computeRRuleFromString(this.state.data, nextProps.value);
-      this.setState({ data });
-    }
-  }
-
-  handleChange = ({ target }) => {
-    const newData = cloneDeep(this.state.data);
+  const handleChange = ({ target }) => {
+    const newData = cloneDeep(state.data);
     set(newData, target.name, target.value);
+
     const rrule = computeRRuleToString(newData);
 
-    this.setState({ data: newData });
-    this.props.onChange(rrule);
+    setState(prevState => ({ ...prevState, data: newData }));
+    onChange(rrule);
   };
 
-  render() {
-    const {
-      id,
-      data: {
-        start,
-        repeat,
-        end,
-        options,
-        error,
-      },
-    } = this.state;
+  const startDate = new Date(state.data.start.onDate.date);
+  return (
+    <div>
+      {!state.data.options.hideError && state.data.error && (
+        <div className="alert alert-danger">
+          {translateLabel(translations, 'invalid_rrule', { value: state.data.error.value })}
+        </div>
+      )}
 
-    return (
-      <div>
-
-        {
-          !options.hideError && error && (
-            <div className="alert alert-danger">
-              {translateLabel(this.props.translations, 'invalid_rrule', { value: error.value })}
-            </div>
-          )
-        }
-
-        <div className="px-0 pt-3 border rounded">
-
-          {
-            !options.hideStart && (
-              <div>
-                <Start
-                  id={`${id}-start`}
-                  start={start}
-                  handleChange={this.handleChange}
-                  translations={this.props.translations}
-                />
-                <hr />
-              </div>
-            )
-          }
-
+      <div className="px-0 pt-3 border rounded">
+        {!state.data.options.hideStart && (
           <div>
-            <Repeat
-              id={`${id}-repeat`}
-              repeat={repeat}
-              handleChange={this.handleChange}
-              translations={this.props.translations}
+            <Start
+              id={`${state.id}-start`}
+              start={state.data.start}
+              handleChange={handleChange}
+              translations={translations}
+            />
+            <hr />
+          </div>
+        )}
+
+        <div>
+          <Repeat
+            id={`${state.id}-repeat`}
+            repeat={state.data.repeat}
+            handleChange={handleChange}
+            translations={translations}
+            startDate={startDate}
+          />
+        </div>
+
+        {!state.data.options.hideEnd && (
+          <div>
+            <hr />
+            <End
+              id={`${state.id}-end`}
+              end={state.data.end}
+              handleChange={handleChange}
+              translations={translations}
             />
           </div>
-
-          {
-            !options.hideEnd && (
-              <div>
-                <hr />
-                <End
-                  id={`${id}-end`}
-                  end={end}
-                  handleChange={this.handleChange}
-                  translations={this.props.translations}
-                />
-              </div>
-            )
-          }
-
-        </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 ReactRRuleGenerator.propTypes = {
   id: PropTypes.string,
   config: PropTypes.shape({
     frequency: PropTypes.arrayOf(PropTypes.oneOf(['Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly'])),
-    yearly: PropTypes.oneOf(['on', 'on the']),
+    yearly: PropTypes.oneOf(['on','on the']),
     monthly: PropTypes.oneOf(['on', 'on the']),
     end: PropTypes.arrayOf(PropTypes.oneOf(['Never', 'After', 'On date'])),
     hideStart: PropTypes.bool,
@@ -135,6 +97,7 @@ ReactRRuleGenerator.propTypes = {
   calendarComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   translations: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 };
+
 ReactRRuleGenerator.defaultProps = {
   id: null,
   value: '',

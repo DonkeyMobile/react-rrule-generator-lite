@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import TextareaAutosize from 'react-autosize-textarea';
 
-import ReactRRuleGenerator, { translations } from '../lib';
+import RRuleGenerator, { translations } from '../lib';
 import './index.css';
 import githubLogo from './github_logo.png';
 
 class App extends Component {
   state = {
-    rrule: 'DTSTART:20190301T230000Z\nFREQ=YEARLY;BYMONTH=1;BYMONTHDAY=1',
+    rrule: 'DTSTART:19741028T130533Z\nFREQ=YEARLY;BYMONTH=2;BYMONTHDAY=22',
     isCopied: false,
     language: 'en',
   };
@@ -61,8 +61,7 @@ class App extends Component {
 
         <div className="app container">
           <h5><strong>{'<RRuleGenerator />'}</strong></h5>
-
-          <ReactRRuleGenerator
+          <RRuleGenerator
             onChange={this.handleChange}
             value={this.state.rrule}
             config={{
