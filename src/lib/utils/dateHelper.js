@@ -1,6 +1,6 @@
 export function extractDateFromRRule(rrule) {
   const dtstartIndex = rrule.indexOf('DTSTART:');
-  const ruleStart = rrule.indexOf('Z\nFREQ');
+  const ruleStart = rrule.indexOf('Z\nRRULE:FREQ');
 
   if (dtstartIndex !== -1 && ruleStart !== -1) {
     const dateString = rrule.slice(dtstartIndex + 8, ruleStart);
@@ -12,8 +12,7 @@ export function extractDateFromRRule(rrule) {
       parseInt(dateString.substring(13, 15))     // second
     ));
   }
-
-  return null;
+  return new Date();
 }
 
 

@@ -33,6 +33,7 @@ const ReactRRuleGenerator = ({ id = null, value = '', config = {}, onChange = ()
   };
 
   const startDate = new Date(state.data.start.onDate.date);
+
   return (
     <div>
       {!state.data.options.hideError && state.data.error && (
@@ -53,7 +54,6 @@ const ReactRRuleGenerator = ({ id = null, value = '', config = {}, onChange = ()
             <hr />
           </div>
         )}
-
         <div>
           <Repeat
             id={`${state.id}-repeat`}

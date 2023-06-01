@@ -32,7 +32,6 @@ const computeRRule = (data, rrule) => {
   let newDataObj;
   try {
     const rruleObj = RRuleObjectFromString(rrule).origOptions;
-
     newDataObj = {
       ...data,
       start: {

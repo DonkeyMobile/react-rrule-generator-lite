@@ -1,4 +1,4 @@
-import { MONTHS } from '../../../constants/index';
+import { MONTHS_LF } from '../../../constants/index';
 
 const computeYearlyOnThe = (onThe) => {
   const repeat = {};
@@ -58,7 +58,7 @@ const computeYearlyOnThe = (onThe) => {
       break;
   }
 
-  repeat.bymonth = MONTHS.indexOf(onThe.month) + 1;
+  repeat.bymonth = MONTHS_LF.indexOf(onThe.month) + 1;
 
   return repeat;
 };

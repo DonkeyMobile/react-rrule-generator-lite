@@ -4,7 +4,7 @@ import moment from 'moment';
 import { range } from 'lodash';
 
 import numericalFieldHandler from '../../../utils/numericalFieldHandler';
-import { MONTHS } from '../../../constants/index';
+import {MONTHS_LF} from '../../../constants/index';
 import translateLabel from '../../../utils/translateLabel';
 
 const RepeatYearlyOn = ({
@@ -15,7 +15,7 @@ const RepeatYearlyOn = ({
   handleChange,
   translations
 }) => {
-  const daysInMonth = moment(on.month, 'MMM').daysInMonth();
+  const daysInMonth = moment('2022-'+on.month, 'YYYY-MMM').daysInMonth() || 31;
   const isActive = mode === 'on';
 
   return (
@@ -49,7 +49,7 @@ const RepeatYearlyOn = ({
           disabled={!isActive}
           onChange={handleChange}
         >
-          {MONTHS.map(month => <option key={month} value={month}>{translateLabel(translations, `months.${month.toLowerCase()}`)}</option>)}
+          {MONTHS_LF.map(month => <option key={month} value={month}>{translateLabel(translations, `months.${month.toLowerCase()}`)}</option>)}
         </select>
       </div>
 
@@ -75,7 +75,7 @@ RepeatYearlyOn.propTypes = {
   id: PropTypes.string.isRequired,
   mode: PropTypes.oneOf(['on', 'on the']).isRequired,
   on: PropTypes.shape({
-    month: PropTypes.oneOf(MONTHS).isRequired,
+    month: PropTypes.oneOf(MONTHS_LF).isRequired,
     day: PropTypes.number.isRequired,
   }).isRequired,
   hasMoreModes: PropTypes.bool.isRequired,

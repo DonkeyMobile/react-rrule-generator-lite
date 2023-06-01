@@ -2,7 +2,7 @@ import moment from 'moment';
 import { isEmpty, uniqueId } from 'lodash';
 
 import computeRRuleToString from './computeRRule/toString/computeRRule';
-import { DATE_TIME_FORMAT } from '../constants/index';
+import {DATE_TIME_FORMAT, MONTHS_LF} from '../constants/index';
 import {extractDateFromRRule} from "./dateHelper";
 
 const configureState = (config = {}, calendarComponent, id, value) => {
@@ -15,11 +15,10 @@ const configureState = (config = {}, calendarComponent, id, value) => {
   const uniqueRruleId = isEmpty(id) ? uniqueId('rrule-') : id;
 
   let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  let months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-  const weekdayIndex = extractedDate.getDay();
-  const monthIndex = extractedDate.getMonth();
-  const dayOfMonth = extractedDate.getDate();
+  const weekdayIndex = extractedDate ? extractedDate.getDay() : 0;
+  const monthIndex = extractedDate ? extractedDate.getMonth() : 0;
+  const dayOfMonth = extractedDate ? extractedDate.getDate() : 1;
 
   const data = {
     start: {
@@ -36,11 +35,11 @@ const configureState = (config = {}, calendarComponent, id, value) => {
       yearly: {
         mode: configureYearly(),
         on: {
-          month: months[monthIndex],
+          month: MONTHS_LF[monthIndex],
           day: dayOfMonth,
         },
         onThe: {
-          month: months[monthIndex],
+          month: MONTHS_LF[monthIndex],
           day: weekdays[weekdayIndex],
           which: 'First',
         },

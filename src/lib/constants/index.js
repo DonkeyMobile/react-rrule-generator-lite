@@ -14,6 +14,22 @@ export const MONTHS = [
   'Nov',
   'Dec'
 ];
+
+export const MONTHS_LF = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
 export const DAYS = [
   'Monday',
   'Tuesday',

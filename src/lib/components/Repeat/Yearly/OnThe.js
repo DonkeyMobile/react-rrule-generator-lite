@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { MONTHS, DAYS } from '../../../constants/index';
+import { MONTHS_LF, DAYS } from '../../../constants/index';
 import translateLabel from '../../../utils/translateLabel';
 
 const RepeatYearlyOnThe = ({
@@ -79,7 +79,7 @@ const RepeatYearlyOnThe = ({
           disabled={!isActive}
           onChange={handleChange}
         >
-          {MONTHS.map(month => <option key={month} value={month}>{translateLabel(translations, `months.${month.toLowerCase()}`)}</option>)}
+          {MONTHS_LF.map(month => <option key={month} value={month}>{translateLabel(translations, `months.${month.toLowerCase()}`)}</option>)}
         </select>
       </div>
 
@@ -91,7 +91,7 @@ RepeatYearlyOnThe.propTypes = {
   mode: PropTypes.oneOf(['on', 'on the']).isRequired,
   onThe: PropTypes.shape({
     which: PropTypes.oneOf(['First', 'Second', 'Third', 'Fourth', 'Last']).isRequired,
-    month: PropTypes.oneOf(MONTHS).isRequired,
+    month: PropTypes.oneOf(MONTHS_LF).isRequired,
     day: PropTypes.oneOf(DAYS).isRequired,
   }).isRequired,
   hasMoreModes: PropTypes.bool.isRequired,

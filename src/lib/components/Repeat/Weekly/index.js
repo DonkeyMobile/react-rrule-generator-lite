@@ -19,6 +19,7 @@ const RepeatWeekly = ({
     daysArray = daysArray.slice(-1).concat(daysArray.slice(0, -1));
   }
 
+
   return (
     <div className="px-3">
       <div className="form-group row d-flex align-items-sm-center">
@@ -46,7 +47,7 @@ const RepeatWeekly = ({
             <label
               htmlFor={`${id}-${dayName}`}
               key={dayName}
-              className={`btn btn-primary ${isDayActive ? 'active' : ''}`}
+              className={`btn btn-secondary ${isDayActive ? 'active' : ''}`}
             >
               <input
                 type="checkbox"

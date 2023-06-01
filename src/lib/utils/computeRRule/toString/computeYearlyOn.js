@@ -1,7 +1,7 @@
-import { MONTHS } from '../../../constants/index';
+import {MONTHS_LF} from '../../../constants/index';
 
 const computeYearlyOn = on => ({
-  bymonth: MONTHS.indexOf(on.month) + 1,
+  bymonth: MONTHS_LF.indexOf(on.month) + 1,
   bymonthday: on.day,
 });
 

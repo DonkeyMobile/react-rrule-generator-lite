@@ -8,12 +8,12 @@ import githubLogo from './github_logo.png';
 
 class App extends Component {
   state = {
-    rrule: 'DTSTART:19741028T130533Z\nFREQ=YEARLY;BYMONTH=2;BYMONTHDAY=22',
+    rrule: `DTSTART:20230527T130000Z\nRRULE:FREQ=WEEKLY;INTERVAL=1`,
     isCopied: false,
     language: 'en',
   };
 
-  getTranslation = () => (this.state.language === 'de') ? translations.german : undefined;
+  getTranslation = () => (this.state.language === 'de') ? translations.german : translations.english;
 
   handleChangeLanguage = (event) => {
     event.persist();
@@ -65,6 +65,9 @@ class App extends Component {
             onChange={this.handleChange}
             value={this.state.rrule}
             config={{
+              repeat: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+              weekStartsOnSunday: false,
+              hideError: false,
               hideStart: false,
             }}
             translations={this.getTranslation()}
